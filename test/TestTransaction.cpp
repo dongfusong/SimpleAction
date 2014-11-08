@@ -23,8 +23,8 @@ protected:
 	__transaction(
 		__sequential(
 			__async(Action1),
-			__async(Action2),
-			__async(Action3))
+			__async(Action2)
+			)
 	)trans1;
 
 	__transaction(
@@ -54,8 +54,8 @@ TEST_F(TestTransaction, can_schedule_sequetial_actions)
 {
 	EXPECT_EQ(CONTINUE, trans1.start());
 	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_1));
-	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(SUCCESS, trans1.handleEvent(EV_EVENT_3));
+	EXPECT_EQ(SUCCESS, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_3));
 }
 
 TEST_F(TestTransaction, can_schedule_nested_sequetial_actions)

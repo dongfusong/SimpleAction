@@ -10,6 +10,7 @@
 #include "Role.h"
 
 #define ABSTRACT(...) virtual __VA_ARGS__ = 0
+#define OVERRIDE virtual
 typedef int Status;
 
 

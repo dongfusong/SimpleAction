@@ -18,8 +18,8 @@ class SchedAction;
 class SequentialSchedAction : public SchedAction{
 public:
 	SequentialSchedAction();
-	Status exec();
-	Status handleEvent(const Event& event);
+	OVERRIDE Status exec();
+	OVERRIDE Status handleEvent(const Event& event);
 	void pushBackAction(SchedAction* action);
 private:
 	Status forword();

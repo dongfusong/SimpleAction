@@ -15,8 +15,8 @@
 class SchedAction;
 class ActionBasedTransaction : public Transaction{
 public:
-	Status start();
-	Status handleEvent(const Event& event);
+	OVERRIDE Status start();
+	OVERRIDE Status handleEvent(const Event& event);
 private:
 	USE_ROLE(SchedAction);
 };
