@@ -6,7 +6,7 @@
  */
 #include <gtest/gtest.h>
 #include "Transaction/TransactionDSL.h"
-#include "userAction/SimpleAction.h"
+#include "SimpleAction.h"
 
 DEF_ACTION(Action1, EV_EVENT_1);
 DEF_ACTION(Action2, EV_EVENT_2);
