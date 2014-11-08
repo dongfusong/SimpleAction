@@ -23,20 +23,22 @@ protected:
 	__transaction(
 		__sequential(
 			__async(Action1),
-			__async(Action2)
+			__async(Action2),
+			__sequential( __async(Action3),
+						  __async(Action2),
+						  __async(Action1))
 			)
 	)trans1;
 
 	__transaction(
-		__sequential(
-			__async(Action1),
-			__async(Action2),
-			__sequential( __async(Action3),
-						  __async(Action2),
-						  __async(Action1)
-						  )
+			__sequential(
+					__async(Action1),__async(Action1),__async(Action1),
+					__async(Action1),__async(Action1),__async(Action1),
+					__async(Action1),__async(Action1),__async(Action1),
+					__async(Action1),__async(Action1),__async(Action1),
+					__async(Action1),__async(Action1),__async(Action1)
 			)
-	)trans;
+		)trans2;
 };
 
 TEST_F(TestTransaction, return_unkown_when_error_event)
@@ -54,20 +56,24 @@ TEST_F(TestTransaction, can_schedule_sequetial_actions)
 {
 	EXPECT_EQ(CONTINUE, trans1.start());
 	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_1));
-	EXPECT_EQ(SUCCESS, trans1.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_3));
+	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_3));
+	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(SUCCESS, trans1.handleEvent(EV_EVENT_1));
+	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_2));
 }
 
-TEST_F(TestTransaction, can_schedule_nested_sequetial_actions)
-{
-	EXPECT_EQ(CONTINUE, trans.start());
-	EXPECT_EQ(CONTINUE, trans.handleEvent(EV_EVENT_1));
-	EXPECT_EQ(CONTINUE, trans.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(CONTINUE, trans.handleEvent(EV_EVENT_3));
-	EXPECT_EQ(CONTINUE, trans.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(SUCCESS, trans.handleEvent(EV_EVENT_1));
+TEST_F(TestTransaction, can_holds_15_acitons){
+	EXPECT_EQ(CONTINUE, trans2.start());
+	int actionNum = 0;
+	while(1){
+		Status status = trans2.handleEvent(EV_EVENT_1);
+		actionNum++;
+		if (CONTINUE != status){
+			break;
+		}
+	}
+	EXPECT_EQ(15, actionNum);
 }
-
-
 
 
