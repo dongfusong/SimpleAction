@@ -15,6 +15,9 @@
 #define EV_EVENT_2 2
 #define EV_EVENT_3 3
 
+#define EV_EVENT_4 4
+#define EV_EVENT_5 5
+
 
 class SimpleAction : public Action{
 public:
@@ -32,7 +35,7 @@ private:
 };
 
 
-#define DEF_ACTION(name, eventId)\
+#define DEF_ASYNC_ACTION(name, eventId)\
 class name : public SimpleAction\
 {\
 public:\
@@ -41,6 +44,13 @@ public:\
 		return CONTINUE;\
 	}\
 }
-
+#define DEF_SYNC_ACTION(name, eventId)\
+class name : public SimpleAction\
+{\
+public:\
+	Status exec(){\
+		return SUCCESS;\
+	}\
+}
 
 #endif /* USERACTION_H_ */

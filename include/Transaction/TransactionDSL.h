@@ -11,8 +11,11 @@
 #include "helper/SequentialSchedActionHelper.h"
 #include "helper/TransactionHelper.h"
 #include "helper/AsyncHelper.h"
+#include "helper/SyncHelper.h"
 
 #define __async(...) ASYNC__<__VA_ARGS__>
+
+#define __sync(...) SYNC__<__VA_ARGS__>
 
 #define __sequential(...) SEQUENTIAL__<__VA_ARGS__ >
 

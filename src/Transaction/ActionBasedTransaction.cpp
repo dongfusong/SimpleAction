@@ -17,5 +17,3 @@ Status ActionBasedTransaction::handleEvent(const Event& event)
 {
 	return ROLE(SchedAction).handleEvent(event);
 }
-
-

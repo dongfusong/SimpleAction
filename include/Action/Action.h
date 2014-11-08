@@ -14,6 +14,4 @@ class Action : public SyncAction, public Role<Action>
 public:
 	ABSTRACT(Status handleEvent(const Event& event));
 };
-
-
 #endif /* ASYNCACTION_H_ */
