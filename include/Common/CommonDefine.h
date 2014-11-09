@@ -20,6 +20,7 @@ typedef int Status;
 #define SUCCESS 1
 #define CONTINUE 0
 #define UNKNOWN_EVENT 2
+#define FATAL_ERR 3
 
 #define DEF_ROLE(role) class role : public Role<role>
 

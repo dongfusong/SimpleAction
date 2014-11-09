@@ -17,7 +17,4 @@ public:
 private:
 	ACTION action;
 };
-
-
-
 #endif /* SYNCHELPER_H_ */
