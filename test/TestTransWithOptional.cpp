@@ -29,7 +29,6 @@ public:
 };
 
 
-
 class TestTransactionWithOptional: public testing::Test {
 public:
 	void SetUp() {

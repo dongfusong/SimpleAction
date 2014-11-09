@@ -31,7 +31,8 @@ protected:
 						  __async(Action2),
 						  __async(Action1))
 			)
-	)trans1;
+	)sequetialTrans;
+
 
 	__transaction(
 				__sequential(
@@ -41,42 +42,42 @@ protected:
 						__async(Action1),__async(Action1),__async(Action1),
 						__async(Action1),__async(Action1),__async(Action1)
 				)
-			)trans2;
+			)maxActionsTrans;
 
 	__transaction(
 				__sequential(
 					__sync(Action4),__sync(Action4),__sync(Action4)
 				)
-			)trans3;
+			)allSyncTrans;
 };
 
 TEST_F(TestTransaction, return_unkown_when_error_event)
 {
-	EXPECT_EQ(CONTINUE, trans1.start());
-	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(CONTINUE, sequetialTrans.start());
+	EXPECT_EQ(UNKNOWN_EVENT, sequetialTrans.handleEvent(EV_EVENT_2));
 }
 
 TEST_F(TestTransaction, return_unkown_when_error_event_before_start)
 {
-	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(UNKNOWN_EVENT, sequetialTrans.handleEvent(EV_EVENT_2));
 }
 
 TEST_F(TestTransaction, can_schedule_nested_sequetial_actions)
 {
-	EXPECT_EQ(CONTINUE, trans1.start());
-	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_1));
-	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_3));
-	EXPECT_EQ(CONTINUE, trans1.handleEvent(EV_EVENT_2));
-	EXPECT_EQ(SUCCESS, trans1.handleEvent(EV_EVENT_1));
-	EXPECT_EQ(UNKNOWN_EVENT, trans1.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(CONTINUE, sequetialTrans.start());
+	EXPECT_EQ(CONTINUE, sequetialTrans.handleEvent(EV_EVENT_1));
+	EXPECT_EQ(CONTINUE, sequetialTrans.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(CONTINUE, sequetialTrans.handleEvent(EV_EVENT_3));
+	EXPECT_EQ(CONTINUE, sequetialTrans.handleEvent(EV_EVENT_2));
+	EXPECT_EQ(SUCCESS, sequetialTrans.handleEvent(EV_EVENT_1));
+	EXPECT_EQ(UNKNOWN_EVENT, sequetialTrans.handleEvent(EV_EVENT_2));
 }
 
 TEST_F(TestTransaction, sequetials_can_holds_max_15_acitons){
-	EXPECT_EQ(CONTINUE, trans2.start());
+	EXPECT_EQ(CONTINUE, maxActionsTrans.start());
 	int actionNum = 0;
 	while(1){
-		Status status = trans2.handleEvent(EV_EVENT_1);
+		Status status = maxActionsTrans.handleEvent(EV_EVENT_1);
 		actionNum++;
 		if (CONTINUE != status){
 			break;
@@ -85,8 +86,8 @@ TEST_F(TestTransaction, sequetials_can_holds_max_15_acitons){
 	EXPECT_EQ(15, actionNum);
 }
 
-TEST_F(TestTransaction, start_with_sync_actions){
-	EXPECT_EQ(SUCCESS, trans3.start());
+TEST_F(TestTransaction, start_with_all_sync_actions_and_success){
+	EXPECT_EQ(SUCCESS, allSyncTrans.start());
 }
 
 

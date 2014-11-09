@@ -19,7 +19,4 @@ private:
 	CONDITION condition;
 };
 
-
-
-
 #endif /* NOTHELPER_H_ */
